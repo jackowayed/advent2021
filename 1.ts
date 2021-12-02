@@ -1,6 +1,6 @@
 import { readLines } from './util';
 
-const FILENAME = "NAME.txt";
+const FILENAME = "1.txt";
 
 function readFile() {
   return readLines(FILENAME);
