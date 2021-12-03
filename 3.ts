@@ -47,7 +47,7 @@ function mostCommonBit(lines, bit) {
     if (lines[i][bit] === "1")
       ones++;
   }
-  return ones > (lines.length / 2) ? "1" : "0";
+  return ones >= (lines.length / 2) ? "1" : "0";
 }
 
 function filterLines(lines, bit, val) {
