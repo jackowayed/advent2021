@@ -1,6 +1,6 @@
 import { readLines } from './util';
 
-const FILENAME = "4.txt";
+const FILENAME = "4test.txt";
 
 const ZERO_TO_FOUR = [...Array(5).keys()];
 
@@ -79,10 +79,11 @@ function sumUnmarked(board: number[][], numSeq: number[], idx) {
   return sum;
 }
 
-function test(boards, seq, lines) {
+function test(boards, seq, lines: string[]) {
   //console.log(genRuns(boards[2]));
   console.log(lines[0]);
   console.log(lines[0].split(",").map(s => parseInt(s)));
+  lines[0].split(",").map(pars);
   //console.log(seq);
   //console.log(seq.indexOf(24));
 }
@@ -92,17 +93,24 @@ function part1() {
   const lines = readFile();
 
   const seq = lines[0].split(",").map(s => parseInt(s));
-  const boards = parseBoards(lines);
+  let boards = parseBoards(lines);
   //test(boards, seq, lines);
   for (let idx = 0; idx < seq.length; idx++) {
-    const winner = boards.find(b => hasWon(b, seq, idx));
-    if (winner) {
-      console.log(winner);
-      const sum = sumUnmarked(winner, seq, idx);
-      const lastCalled = seq[idx];
-      console.log(sum, lastCalled);
-      return sum * lastCalled;
+    const losers = [];
+    for (let b of boards) {
+      if (hasWon(b, seq, idx)) {
+        if (boards.length === 1) {
+          console.log(b);
+          const sum = sumUnmarked(b, seq, idx);
+          const lastCalled = seq[idx];
+          console.log(sum, lastCalled);
+          return sum * lastCalled;
+        }
+      } else {
+        losers.push(b);
+      }
     }
+    boards = losers;
   }
 
 
