@@ -1,6 +1,6 @@
 import { readLines } from './util';
 
-const FILENAME = "4test.txt";
+const FILENAME = "4.txt";
 
 const ZERO_TO_FOUR = [...Array(5).keys()];
 
@@ -71,7 +71,7 @@ function sumUnmarked(board: number[][], numSeq: number[], idx) {
   for (let y = 0; y < 5; y++) {
     for (let x = 0; x < 5; x++) {
       const callIdx = numSeq.indexOf(board[y][x]);
-      if (callIdx > -1 && callIdx <= idx) {
+      if (!(callIdx > -1 && callIdx <= idx)) {
         sum += board[y][x];
       }
     }
@@ -79,12 +79,21 @@ function sumUnmarked(board: number[][], numSeq: number[], idx) {
   return sum;
 }
 
+function test(boards, seq, lines) {
+  //console.log(genRuns(boards[2]));
+  console.log(lines[0]);
+  console.log(lines[0].split(",").map(s => parseInt(s)));
+  //console.log(seq);
+  //console.log(seq.indexOf(24));
+}
+
 function part1() {
   console.log(parseInt(" 2"));
   const lines = readFile();
 
-  const seq = lines[0].split(",").map(parseInt);
+  const seq = lines[0].split(",").map(s => parseInt(s));
   const boards = parseBoards(lines);
+  //test(boards, seq, lines);
   for (let idx = 0; idx < seq.length; idx++) {
     const winner = boards.find(b => hasWon(b, seq, idx));
     if (winner) {
