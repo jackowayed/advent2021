@@ -28,29 +28,30 @@ function readFile(): Line[] {
 
 function part1() {
   const lines = readFile();
+  //const lines = [{ x1: 8, y1: 0, x2: 0, y2: 8 }];
   const counts = new Map();
   for (const line of lines) {
-    let direction = Direction.Diag;
-    if (line.y1 === line.y2) direction = Direction.X;
-    if (line.x1 === line.x2) direction = Direction.Y;
-    let ymin = Math.min(line.y1, line.y2);
-    let ymax = Math.max(line.y1, line.y2);
-    let xmin = Math.min(line.x1, line.x2);
-    let xmax = Math.max(line.x1, line.x2);
-    let dx = 1;
-    let dy = 1;
-    if (direction === Direction.X) dy = 0;
-    else if (direction === Direction.Y) dx = 0;
-    for (let x = xmin, y = ymin; x <= xmax && y <= ymax; x += dx, y += dy) {
+    let x = line.x1;
+    let y = line.y1;
+    const dx = Math.sign(line.x2 - line.x1);
+    const dy = Math.sign(line.y2 - line.y1);
+    do {
+      //for (; x !== line.x2 + dx && y !== line.y2 + dy; x += dx, y += dy) {
       const key = mapKey(x, y);
+      console.log(key);
+      //if (key === "0,0") console.log(line);
       const prevVal = counts.get(key) || 0;
       counts.set(key, prevVal + 1);
-    }
+      if (x === line.x2 && y === line.y2) break;
+      x += dx;
+      y += dy;
+    } while (true);
   }
   let ct = 0;
   for (const v of counts.values()) {
     if (v > 1) ct++;
   }
+  //console.log(counts);
   return ct;
 }
 console.log(part1());
