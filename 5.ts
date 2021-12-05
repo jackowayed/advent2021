@@ -11,7 +11,8 @@ type Line = {
 
 enum Direction {
   X,
-  Y
+  Y,
+  Diag
 };
 
 function mapKey(x, y): string {
@@ -22,26 +23,25 @@ function readFile(): Line[] {
   return readLines(FILENAME).map(l => {
     const m = /(\d+),(\d+) -> (\d+),(\d+)/.exec(l)!;
     return { x1: parseInt(m[1])!, y1: parseInt(m[2])!, x2: parseInt(m[3])!, y2: parseInt(m[4])! };
-  }).filter(l => l.x1 === l.x2 || l.y1 === l.y2);
+  });
 }
 
 function part1() {
   const lines = readFile();
   const counts = new Map();
   for (const line of lines) {
-    let direction = Direction.X;
+    let direction = Direction.Diag;
+    if (line.y1 === line.y2) direction = Direction.X;
     if (line.x1 === line.x2) direction = Direction.Y;
-    let endpoint1, endpoint2;
-    if (direction === Direction.Y) {
-      endpoint1 = Math.min(line.y1, line.y2);
-      endpoint2 = Math.max(line.y1, line.y2);
-    } else {
-      endpoint1 = Math.min(line.x1, line.x2);
-      endpoint2 = Math.max(line.x1, line.x2);
-    }
-    for (let i = endpoint1; i <= endpoint2; i++) {
-      const x = direction === Direction.X ? i : line.x1;
-      const y = direction === Direction.Y ? i : line.y1;
+    let ymin = Math.min(line.y1, line.y2);
+    let ymax = Math.max(line.y1, line.y2);
+    let xmin = Math.min(line.x1, line.x2);
+    let xmax = Math.max(line.x1, line.x2);
+    let dx = 1;
+    let dy = 1;
+    if (direction === Direction.X) dy = 0;
+    else if (direction === Direction.Y) dx = 0;
+    for (let x = xmin, y = ymin; x <= xmax && y <= ymax; x += dx, y += dy) {
       const key = mapKey(x, y);
       const prevVal = counts.get(key) || 0;
       counts.set(key, prevVal + 1);
@@ -52,10 +52,6 @@ function part1() {
     if (v > 1) ct++;
   }
   return ct;
-
-
-
-  const lines2 = readFile();
 }
 console.log(part1());
 
