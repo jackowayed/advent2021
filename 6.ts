@@ -32,9 +32,9 @@ function part1() {
 }
 //console.log(part1());
 
-const MEM = new Map();
+const MEM: { [index: string]: number; } = {};
 
-function key(timer, daysLeft) {
+function key(timer: number, daysLeft: number): string {
   return timer + "," + daysLeft;
 }
 
@@ -42,7 +42,7 @@ function endingFish(timer: number, daysLeft: number): number {
   //console.log(timer, daysLeft);
   if (daysLeft === 0) return 1;
   const key_ = key(timer, daysLeft);
-  if (MEM.has(key_)) return MEM.get(key_);
+  if (key_ in MEM) return MEM[key_];
   let val = 0;
   if (timer === 0) {
     //console.log("0");
@@ -57,7 +57,7 @@ function endingFish(timer: number, daysLeft: number): number {
     throw new Error("NaN");
   }
   //console.log(val);
-  MEM.set(key_, val);
+  MEM[key_] = val;
   return val;
 }
 
@@ -68,7 +68,6 @@ function part2() {
   let count = 0;
   for (let n of fish) {
     const e = endingFish(n, 256);
-    console.log(e);
     count += e;
   }
   return count;
