@@ -114,43 +114,52 @@ function isSuperset(superset: string, sub: string) {
   return true;
 }
 
+function set(m, idx, s) {
+  if (m[idx] !== undefined) {
+    console.log(m);
+    console.log(idx, s);
+    throw new Error();
+  }
+  m[idx] = s;
+}
+
 function solveInput(input: string[]): Array<string> {
   const m = new Array<string>(10);
   // find the easy ones
   for (let s of input) {
     if (s.length === 2) {
-      m[1] = s;
+      set(m, 1, s);
     }
     else if (s.length === 3) {
-      m[7] = s;
+      set(m, 7, s);
     }
     else if (s.length === 4) {
-      m[4] = s;
+      set(m, 4, s);
     }
     else if (s.length === 7) {
-      m[8] = s;
+      set(m, 8, s);
     }
   }
   for (let s of input.filter(s => s.length === 5)) {
     if (isSuperset(s, m[1])) {
       // 3 is the only 5-length that is a supserset of 1
-      m[3] = s;
+      set(m, 3, s);
     }
   }
   for (let s of input.filter(s => s.length === 6)) {
     if (isSuperset(s, m[3])) {
-      m[9] = s;
+      set(m, 9, s);
     } else if (isSuperset(s, m[1])) {
-      m[0] = s;
+      set(m, 0, s);
     } else {
-      m[6] = s;
+      set(m, 6, s);
     }
   }
   for (let s of input.filter(s => s.length === 5 && s !== m[3])) {
-    if (isSuperset(s, m[6])) {
-      m[5] = s;
+    if (isSuperset(m[6], s)) {
+      set(m, 5, s);
     } else {
-      m[2] = s;
+      set(m, 2, s);
     }
   }
   return m;
