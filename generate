@@ -2,4 +2,10 @@
 
 set -eu
 
-sed s/NAME.txt/$1.txt/g <template.ts >$1.ts
+FILE="$1.ts"
+if [ -f $FILE ]; then
+  echo "$FILE exists"
+  exit 1
+fi
+
+sed s/NAME.txt/$1.txt/g <template.ts >$FILE
