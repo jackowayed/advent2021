@@ -1,4 +1,5 @@
 import { readLines } from './util';
+const _ = require("lodash");
 
 const FILENAME = "12.txt";
 
@@ -35,24 +36,30 @@ function readFile(): Cave {
   return caves["start"];
 }
 
+function canVisit(cave: Cave, path: Cave[]): boolean {
+  if (cave.name === "start") return false;
+  if (cave.isBig || path.indexOf(cave) === -1) return true;
+  const smallCaves = path.filter(c => !c.isBig);
+  return _.uniqBy(smallCaves).length === smallCaves.length;
+}
 
 
 function part1() {
   const startCave = readFile();
   const activePaths = [[startCave]];
-  const endingPaths = [];
+  let endingPaths = 0;
   while (activePaths.length > 0) {
     const path = activePaths.shift()!;
     for (const cave of path[path.length - 1].edges) {
       const newPath = path.concat(cave);
       if (cave.name === "end") {
-        endingPaths.push(newPath);
-      } else if (cave.isBig || path.indexOf(cave) === -1) {
+        endingPaths++;
+      } else if (canVisit(cave, path)) {
         activePaths.push(newPath);
       }
     }
   }
-  return endingPaths.length;
+  return endingPaths;
 }
 console.log(part1());
 
