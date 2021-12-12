@@ -49,7 +49,7 @@ function part1() {
   const activePaths = [[startCave]];
   let endingPaths = 0;
   while (activePaths.length > 0) {
-    const path = activePaths.shift()!;
+    const path = activePaths.pop()!;
     for (const cave of path[path.length - 1].edges) {
       const newPath = path.concat(cave);
       if (cave.name === "end") {
