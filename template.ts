@@ -1,4 +1,5 @@
 import { readLines } from './util';
+const _ = require("lodash");
 
 const FILENAME = "NAME.txt";
 
